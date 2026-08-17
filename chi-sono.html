@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FAQ — Will Blake Artist</title>
-<meta name="description" content="Le domande più frequenti su Will Blake: percorso, strumenti, commissioni.">
+<title>Chi sono — Will Blake Artist</title>
+<meta name="description" content="Will Blake: chi è, il percorso, le commissioni. Bio e contatti.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -31,39 +31,60 @@
         <a href="contenuti.html">Contenuti</a>
         <a href="faq.html">FAQ</a>
         <a href="chi-sono.html">Chi sono</a>
-        <a href="chi-sono.html#contatti">Contatti</a>
+        <a href="#contatti">Contatti</a>
         <a href="https://discord.com/invite/3JS8gdbrpd" target="_blank" rel="noopener noreferrer" class="nav-cta">Entra nella community</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- ============ FAQ ============ -->
-    <section id="faq" class="section">
-      <div class="container section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">Domande frequenti</p>
-          <h2>Le cose che mi chiedete sempre.</h2>
+    <!-- ============ CHI SONO + CONTATTI ============ -->
+    <section id="chi-sono" class="section">
+      <div class="container about-grid">
+        <div class="about-text reveal">
+          <p class="eyebrow">Chi sono</p>
+          <h2>Will Blake</h2>
           <div class="rule"><span></span><span></span></div>
+
+          <p>Ho iniziato con l'iperrealismo, da autodidatta. Col tempo mi sono spostato verso l'animazione, la costruzione delle figure, il movimento — ora studio seriamente per diventare 2D character animator.</p>
+
+          <p class="about-quote">"Se devo vivere al minimo, allora che sia per i miei sogni — una volta per tutte."</p>
+
+          <p>Ho sacrificato famiglia e amici per questo, nel momento in cui ho capito che il mio potenziale e la mia passione erano troppo forti per lavori che non mi appartenevano.</p>
+
+          <p>Quello che mi sta a cuore è aiutare chi fa fatica a trovare informazioni utili sul disegno: è un cammino pieno di rumore, e ci si perde facile senza una guida. Le live e i video nascono da lì.</p>
         </div>
 
-        <div class="faq-list reveal">
-          <details class="faq-item">
-            <summary>Dove hai studiato disegno?</summary>
-            <p>Da autodidatta, dal 2018. Ho studiato Loomis, Hampton, Reilly, Drawabox, Scott Robertson, l'Animator's Survival Kit — nessuna scuola, solo pratica costante e le fonti giuste.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Che programma usi per disegnare?</summary>
-            <p>Procreate, su iPad Pro 12.9". Per una postazione più da lavoro sto valutando una Wacom Cintiq, ma il grosso del lavoro lo faccio ancora lì.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Accetti commissioni private?</summary>
-            <p>Sì, in base alla disponibilità del momento. Scrivimi nel modulo qui sotto raccontandomi cosa ti serve — rispondo io, personalmente.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Quali pennelli usi?</summary>
-            <p>Pochi e sempre gli stessi: uno duro per la costruzione, uno morbido per rifinire. Non è il pennello che fa il disegno.</p>
-          </details>
+        <div id="contatti" class="contact-panel reveal">
+          <h3>Commissioni &amp; collaborazioni</h3>
+          <p>Per lavori su commissione o proposte brand — rispondo io, personalmente.</p>
+
+          <form action="mailto:ciao@willblakeart.com" method="POST" enctype="text/plain">
+            <div class="field">
+              <label for="c-name">Nome</label>
+              <input id="c-name" name="nome" type="text" placeholder="Il tuo nome" required>
+            </div>
+            <div class="field">
+              <label for="c-email">Email</label>
+              <input id="c-email" name="email" type="email" placeholder="tu@esempio.com" required>
+            </div>
+            <div class="field">
+              <label for="c-type">Tipo di richiesta</label>
+              <select id="c-type" name="tipo">
+                <option>Commissione artistica</option>
+                <option>Collaborazione brand</option>
+                <option>Altro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="c-msg">Messaggio</label>
+              <textarea id="c-msg" name="messaggio" placeholder="Raccontami di cosa hai bisogno" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Invia messaggio
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </form>
         </div>
       </div>
     </section>
