@@ -395,8 +395,6 @@
     .stat:last-child{ padding-bottom:0; border-bottom:none; }
     .stat:not(:last-child)::after{ display:none; }
   }
-  @keyframes statPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.14); } }
-  .stat-num.pulsing{ animation:statPulse .5s ease-in-out infinite; }
 
   /* ============ COMMUNITY BANNER ============ */
   .community-banner{ background:var(--orange-500); }
