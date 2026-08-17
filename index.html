@@ -491,20 +491,32 @@
   }
   .art-tile-tap{
     position:absolute; inset:0; z-index:2;
-    pointer-events:none;
+    display:flex; align-items:center; justify-content:center;
+    cursor:zoom-in;
   }
-  @media (max-width:760px){ .art-tile-tap{ pointer-events:auto; } }
+  .art-tile-tap .tap-icon{
+    width:34px; height:34px; padding:9px; box-sizing:border-box;
+    border-radius:50%;
+    background:rgba(21,18,14,0.55);
+    backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+    opacity:0; transform:scale(0.85);
+    transition:opacity .2s var(--ease), transform .2s var(--ease);
+  }
+  @media (hover:hover){
+    .art-tile-tap:hover .tap-icon{ opacity:1; transform:scale(1); }
+  }
 
   .lightbox{
     display:none;
     position:fixed; inset:0; z-index:300;
     align-items:center; justify-content:center;
-    background:rgba(10,8,6,0.94);
+    background:rgba(21,18,14,0.88);
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
     padding:32px 20px;
   }
   .lightbox:target{ display:flex; }
   .lightbox img{
-    max-width:100%; max-height:88vh;
+    max-width:min(100%, 900px); max-height:88vh;
     border-radius:var(--radius-m);
     box-shadow:0 30px 70px -20px rgba(0,0,0,0.7);
   }
@@ -515,6 +527,9 @@
     color:var(--cream-50);
     display:flex; align-items:center; justify-content:center;
     font-family:var(--font-body); font-size:20px; line-height:1;
+    transition:background .2s var(--ease), transform .2s var(--ease);
+  }
+  .lightbox-close:hover{ background:var(--orange-500); transform:scale(1.06);
   }
   .art-tile figcaption{
     position:absolute; left:12px; bottom:10px; z-index:1;
@@ -821,9 +836,9 @@
             <span class="category-note">Movimento, peso, direzione</span>
           </div>
           <div class="grid grid-3">
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr1.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr1" aria-label="Ingrandisci disegno"></a><figcaption>GESTURE STUDY 01</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr2.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr2" aria-label="Ingrandisci disegno"></a><figcaption>GESTURE STUDY 02</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr3.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr3" aria-label="Ingrandisci disegno"></a><figcaption>GESTURE STUDY 03</figcaption></figure>
+            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr1.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr1" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>GESTURE STUDY 01</figcaption></figure>
+            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr2.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr2" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>GESTURE STUDY 02</figcaption></figure>
+            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr3.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr3" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>GESTURE STUDY 03</figcaption></figure>
           </div>
         </div>
 
@@ -834,9 +849,9 @@
             <span class="category-note">Osservazione, valori, controllo</span>
           </div>
           <div class="grid grid-3">
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Venom.jpeg" alt="Venom"><a class="art-tile-tap" href="#lb-venom" aria-label="Ingrandisci disegno"></a><figcaption>VENOM</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Old man.jpeg" alt="Old man"><a class="art-tile-tap" href="#lb-oldman" aria-label="Ingrandisci disegno"></a><figcaption>OLD MAN</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Portrait.jpeg" alt="Portrait"><a class="art-tile-tap" href="#lb-portrait" aria-label="Ingrandisci disegno"></a><figcaption>PORTRAIT</figcaption></figure>
+            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Venom.jpeg" alt="Venom"><a class="art-tile-tap" href="#lb-venom" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>VENOM</figcaption></figure>
+            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Old man.jpeg" alt="Old man"><a class="art-tile-tap" href="#lb-oldman" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>OLD MAN</figcaption></figure>
+            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Portrait.jpeg" alt="Portrait"><a class="art-tile-tap" href="#lb-portrait" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>PORTRAIT</figcaption></figure>
           </div>
         </div>
       </div>
