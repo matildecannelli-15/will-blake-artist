@@ -43,6 +43,7 @@
   }
 
   .container{ width:100%; max-width:1180px; margin:0 auto; padding:0 var(--space-3); }
+  .container-narrow{ width:100%; max-width:640px; margin:0 auto; padding:0 var(--space-3); }
 
   /* ============ SHARED TYPE ============ */
   .eyebrow{
@@ -395,7 +396,7 @@
     .stat:not(:last-child)::after{ display:none; }
   }
   @keyframes statPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.14); } }
-  .stat-num.pulsing{ animation:statPulse .5s ease-in-out infinite; color:var(--orange-300); }
+  .stat-num.pulsing{ animation:statPulse .5s ease-in-out infinite; }
 
   /* ============ COMMUNITY BANNER ============ */
   .community-banner{ background:var(--orange-500); }

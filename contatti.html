@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chi sono — Will Blake Artist</title>
-<meta name="description" content="Will Blake: chi è, il percorso, la filosofia dietro il lavoro.">
+<title>Contatti — Will Blake Artist</title>
+<meta name="description" content="Commissioni e collaborazioni brand con Will Blake — scrivimi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -38,21 +38,45 @@
   </header>
 
   <main>
-    <!-- ============ CHI SONO ============ -->
-    <section id="chi-sono" class="section">
+    <!-- ============ CONTATTI ============ -->
+    <section id="contatti" class="section">
       <div class="container-narrow">
-        <div class="about-text reveal">
-          <p class="eyebrow">Chi sono</p>
-          <h2>Will Blake</h2>
+        <div class="section-head reveal">
+          <p class="eyebrow">Contatti</p>
+          <h2>Commissioni &amp; collaborazioni.</h2>
           <div class="rule"><span></span><span></span></div>
+        </div>
 
-          <p>Ho iniziato con l'iperrealismo, da autodidatta. Col tempo mi sono spostato verso l'animazione, la costruzione delle figure, il movimento — ora studio seriamente per diventare 2D character animator.</p>
+        <div class="contact-panel reveal">
+          <h3>Scrivimi</h3>
+          <p>Per lavori su commissione o proposte brand — rispondo io, personalmente.</p>
 
-          <p class="about-quote">"Se devo vivere al minimo, allora che sia per i miei sogni — una volta per tutte."</p>
-
-          <p>Ho sacrificato famiglia e amici per questo, nel momento in cui ho capito che il mio potenziale e la mia passione erano troppo forti per lavori che non mi appartenevano.</p>
-
-          <p>Quello che mi sta a cuore è aiutare chi fa fatica a trovare informazioni utili sul disegno: è un cammino pieno di rumore, e ci si perde facile senza una guida. Le live e i video nascono da lì.</p>
+          <form action="mailto:ciao@willblakeart.com" method="POST" enctype="text/plain">
+            <div class="field">
+              <label for="c-name">Nome</label>
+              <input id="c-name" name="nome" type="text" placeholder="Il tuo nome" required>
+            </div>
+            <div class="field">
+              <label for="c-email">Email</label>
+              <input id="c-email" name="email" type="email" placeholder="tu@esempio.com" required>
+            </div>
+            <div class="field">
+              <label for="c-type">Tipo di richiesta</label>
+              <select id="c-type" name="tipo">
+                <option>Commissione artistica</option>
+                <option>Collaborazione brand</option>
+                <option>Altro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="c-msg">Messaggio</label>
+              <textarea id="c-msg" name="messaggio" placeholder="Raccontami di cosa hai bisogno" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Invia messaggio
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </form>
         </div>
       </div>
     </section>
