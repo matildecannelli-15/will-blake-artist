@@ -701,3 +701,66 @@
     padding-top:var(--space-3);
     font-family:var(--font-code); font-size:11.5px; color:rgba(251,246,238,0.4);
   }
+
+  /* ============ PORTFOLIO WALL ============ */
+  /* Muro di immagini a righe indipendenti, ognuna in loop infinito a una
+     velocità propria, guidato dal gesto orizzontale del trackpad. Prima
+     versione pensata per laptop/trackpad — mouse fisso e mobile da
+     rifinire in un secondo momento. */
+  .wall-wrap{ max-width:1100px; margin:var(--space-5) auto 0; }
+  .wall-scroll{ overflow:hidden; }
+
+  .wall{ display:flex; flex-direction:column; gap:4px; width:max-content; padding:2px; }
+
+  .wall-row{
+    --h:140px;
+    position:relative;
+  }
+  .wall-row.is-active{ z-index:2; }
+
+  .wall-row-track{ display:flex; gap:4px; width:max-content; will-change:transform; }
+
+  .wcard{
+    flex:0 0 auto; height:var(--h);
+    border:none; padding:0; cursor:pointer;
+    background:rgba(255,255,255,.04); border-radius:8px; overflow:hidden;
+    transition:height .32s var(--ease), box-shadow .32s var(--ease);
+  }
+  .wall-row.is-active .wcard{ height:187px; box-shadow:0 24px 50px -18px rgba(0,0,0,.55); }
+  .wcard img{ height:100%; width:auto; object-fit:contain; display:block; }
+
+  .cursor-label{
+    position:fixed; z-index:300; pointer-events:none;
+    left:0; top:0; transform:translate(-9999px,-9999px);
+    font-family:var(--font-code); font-size:11.5px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-900);
+    background:var(--orange-500);
+    padding:6px 11px; border-radius:999px;
+    opacity:0; transition:opacity .15s var(--ease);
+    white-space:nowrap;
+  }
+  .cursor-label.show{ opacity:1; }
+
+  /* lightbox dedicata al muro — nome diverso da .lightbox (già usata
+     altrove sul sito con meccanismo ad ancora, comportamento diverso) */
+  .wall-lightbox{
+    position:fixed; inset:0; z-index:400;
+    background:rgba(21,18,14,.92); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center; padding:5vh 5vw;
+    opacity:0; pointer-events:none; transition:opacity .25s var(--ease);
+  }
+  .wall-lightbox.open{ opacity:1; pointer-events:auto; }
+  .wall-lightbox img{
+    max-width:100%; max-height:90vh; width:auto; height:auto;
+    border-radius:10px; box-shadow:0 30px 80px -20px rgba(0,0,0,.6);
+    transform:scale(.97); transition:transform .25s var(--ease);
+  }
+  .wall-lightbox.open img{ transform:scale(1); }
+  .wall-lightbox-close{
+    position:absolute; top:20px; right:24px;
+    width:40px; height:40px; border-radius:50%;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2);
+    color:var(--cream-50); font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .wall-lightbox-close:hover{ background:rgba(255,255,255,.16); }

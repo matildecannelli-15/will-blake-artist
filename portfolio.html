@@ -49,40 +49,20 @@
           <p class="section-lead">Dal warm-up di 30 secondi allo studio di ore — ogni categoria racconta una parte diversa dello stesso processo.</p>
         </div>
 
-        <div class="category reveal">
-          <div class="category-head">
-            <span class="category-tag">01</span>
-            <h3>Gesture Drawing</h3>
-            <span class="category-note">Movimento, peso, direzione</span>
-          </div>
-          <div class="grid grid-3">
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr1.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr1" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>GESTURE STUDY 01</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr2.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr2" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>GESTURE STUDY 02</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/cr3.jpg" alt="Gesture study"><a class="art-tile-tap" href="#lb-cr3" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>GESTURE STUDY 03</figcaption></figure>
-          </div>
-        </div>
-
-        <div class="category reveal">
-          <div class="category-head">
-            <span class="category-tag">02</span>
-            <h3>Iperrealismo</h3>
-            <span class="category-note">Osservazione, valori, controllo</span>
-          </div>
-          <div class="grid grid-3">
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Venom.jpeg" alt="Venom"><a class="art-tile-tap" href="#lb-venom" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>VENOM</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Old man.jpeg" alt="Old man"><a class="art-tile-tap" href="#lb-oldman" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>OLD MAN</figcaption></figure>
-            <figure class="art-tile lift"><img class="art-tile-img" src="disegni/Portrait.jpeg" alt="Portrait"><a class="art-tile-tap" href="#lb-portrait" aria-label="Ingrandisci disegno"><svg class="tap-icon" viewBox="0 0 24 24" fill="none"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><figcaption>PORTRAIT</figcaption></figure>
+        <div class="wall-wrap reveal">
+          <div class="wall-scroll">
+            <div class="wall" id="wall"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="lightbox" id="lb-cr1"><a href="#lb-close" class="lightbox-close" aria-label="Chiudi">&times;</a><img src="disegni/cr1.jpg" alt="Gesture study"></div>
-    <div class="lightbox" id="lb-cr2"><a href="#lb-close" class="lightbox-close" aria-label="Chiudi">&times;</a><img src="disegni/cr2.jpg" alt="Gesture study"></div>
-    <div class="lightbox" id="lb-cr3"><a href="#lb-close" class="lightbox-close" aria-label="Chiudi">&times;</a><img src="disegni/cr3.jpg" alt="Gesture study"></div>
-    <div class="lightbox" id="lb-venom"><a href="#lb-close" class="lightbox-close" aria-label="Chiudi">&times;</a><img src="disegni/Venom.jpeg" alt="Venom"></div>
-    <div class="lightbox" id="lb-oldman"><a href="#lb-close" class="lightbox-close" aria-label="Chiudi">&times;</a><img src="disegni/Old man.jpeg" alt="Old man"></div>
-    <div class="lightbox" id="lb-portrait"><a href="#lb-close" class="lightbox-close" aria-label="Chiudi">&times;</a><img src="disegni/Portrait.jpeg" alt="Portrait"></div>
+    <div class="cursor-label" id="cursorLabel"></div>
+
+    <div class="wall-lightbox" id="wallLightbox" aria-hidden="true">
+      <button class="wall-lightbox-close" id="wallLightboxClose" aria-label="Chiudi">✕</button>
+      <img id="wallLightboxImg" src="" alt="">
+    </div>
   </main>
 
   <!-- ============ FOOTER ============ -->
@@ -114,6 +94,173 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    /* Muro portfolio: righe indipendenti in loop infinito a velocità
+       diverse, guidate dal gesto orizzontale del trackpad. Vedi
+       portfolio-carousel-prototype.html per la cronologia delle scelte —
+       prima versione, pensata per laptop/trackpad. */
+    var CATEGORIES = [
+      {
+        title: "Gesture Drawing",
+        folder: "disegni/Gesture%20drawings/",
+        files: ["cr1.jpg", "cr1.a.jpg", "cr2.jpg", "cr2.a.jpg", "cr3.jpg", "cr3%20-%20Copia.jpg"]
+      },
+      {
+        title: "Realismo",
+        folder: "disegni/Realismo/",
+        files: ["Venom.jpeg", "Portrait.jpeg", "Old%20man.jpeg", "2.png", "3.png", "9.png", "10.png", "12.png", "14.png", "15.png", "17.png", "18.png"]
+      },
+      {
+        title: "Acting & Storyboard",
+        folder: "disegni/Acting%20%26%20Drama%20%26%20storyboard/",
+        files: ["ACTING_&_DRAMA.jpg", "ACTING_&_DRAMA3.jpg", "ACTING_&_DRAMA4.jpg", "ACTING_&_DRAMA%202.jpg", "ACTING_&_DRAMA%205.jpg", "Storyboard.jpg"]
+      }
+    ];
+
+    var wall = document.getElementById('wall');
+    var label = document.getElementById('cursorLabel');
+    var driver = document.querySelector('.wall-scroll');
+    var tracks = []; // { el, speed, setWidth }
+    var REPEAT_COUNT = 4;
+
+    CATEGORIES.forEach(function (cat) {
+      var row = document.createElement('div');
+      row.className = 'wall-row';
+
+      var track = document.createElement('div');
+      track.className = 'wall-row-track';
+      row.appendChild(track);
+
+      // il set si ripete più volte (1-2-3...-1-2-3...): serve solo a dare
+      // "corsia" allo scroll nativo, il loop vero è matematico (sotto).
+      var repeated = [];
+      for (var r = 0; r < REPEAT_COUNT; r++) repeated = repeated.concat(cat.files);
+
+      repeated.forEach(function (file, i) {
+        var btn = document.createElement('button');
+        btn.className = 'wcard';
+        var img = document.createElement('img');
+        img.src = cat.folder + file;
+        img.loading = 'lazy';
+        img.alt = cat.title + ' — disegno ' + ((i % cat.files.length) + 1);
+        btn.appendChild(img);
+        btn.addEventListener('click', function () { openLightbox(img.src, img.alt); });
+        track.appendChild(btn);
+      });
+
+      row.addEventListener('mouseenter', function () {
+        row.classList.add('is-active');
+        label.textContent = cat.title;
+        label.classList.add('show');
+      });
+      row.addEventListener('mousemove', function (e) {
+        label.style.transform = 'translate(' + (e.clientX + 18) + 'px,' + (e.clientY - 10) + 'px)';
+      });
+      row.addEventListener('mouseleave', function () {
+        row.classList.remove('is-active');
+        label.classList.remove('show');
+      });
+
+      wall.appendChild(row);
+      tracks.push({ el: track, speed: 1 });
+    });
+
+    // ---- velocità diverse per riga, guidate da un solo scroll ----
+    // La riga più larga (quella che di fatto determina lo scroll nativo
+    // condiviso) è il riferimento e si muove 1:1 con lo scroll reale.
+    // Ogni ALTRA riga si sposta di metà della larghezza della propria
+    // PRIMA immagine (a dimensione piccola) per ogni "passo" equivalente
+    // alla larghezza della prima immagine del riferimento — quindi lo
+    // scarto tra le righe nasce dal formato reale delle immagini, non da
+    // un numero fisso. Misurato una volta sola a righe non ingrandite (al
+    // primo caricamento e al resize): ricalcolarlo durante l'hover falsava
+    // la misura di riferimento e creava lo scatto/scuotimento.
+    function computeSpeeds() {
+      var widest = null, widestWidth = -1;
+      tracks.forEach(function (t) {
+        var w = t.el.getBoundingClientRect().width;
+        if (w > widestWidth) { widestWidth = w; widest = t; }
+        t.setWidth = w / REPEAT_COUNT; // larghezza di UN solo giro del set
+      });
+      var refImgWidth = firstImgWidth(widest.el);
+
+      tracks.forEach(function (t) {
+        if (t === widest) { t.speed = 1; return; }
+        var ownImgWidth = firstImgWidth(t.el);
+        t.speed = refImgWidth > 0 ? (ownImgWidth / 2) / refImgWidth : 1;
+      });
+      applyOffsets();
+    }
+
+    function firstImgWidth(trackEl) {
+      var firstCard = trackEl.querySelector('.wcard');
+      return firstCard ? firstCard.getBoundingClientRect().width : 0;
+    }
+
+    // ---- loop davvero infinito ----
+    // Niente scroll nativo: leggo io il gesto del trackpad (evento
+    // "wheel" con deltaX, cioè il movimento orizzontale a due dita) e lo
+    // accumulo in totalScroll, un numero che può crescere senza limiti
+    // — non serve mai "resettarlo". Il contenuto di ogni riga si ripete
+    // (REPEAT_COUNT volte), quindi la sua posizione visiva è periodica:
+    // avvolgo (modulo) lo spostamento dentro la larghezza di UN giro. Così
+    // ogni riga scorre in loop davvero infinito, ognuna sul proprio ciclo,
+    // senza mai un salto.
+    var totalScroll = 0;
+
+    function applyOffsets() {
+      tracks.forEach(function (t) {
+        var desired = -totalScroll * t.speed;
+        var wrapped = t.setWidth > 0 ? (desired % t.setWidth) : desired;
+        t.el.style.transform = 'translateX(' + wrapped + 'px)';
+      });
+    }
+
+    driver.addEventListener('wheel', function (e) {
+      // un gesto orizzontale vero ha più deltaX che deltaY; se invece
+      // stai scorrendo la pagina in verticale, lascio fare al browser.
+      if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      totalScroll += e.deltaX;
+      applyOffsets();
+    }, { passive: false });
+
+    window.addEventListener('resize', computeSpeeds);
+
+    var wallImgs = wall.querySelectorAll('img');
+    var loadedCount = 0;
+    wallImgs.forEach(function (img) {
+      if (img.complete) loadedCount++;
+      else img.addEventListener('load', function () {
+        loadedCount++;
+        if (loadedCount === wallImgs.length) computeSpeeds();
+      });
+    });
+    computeSpeeds();
+    setTimeout(computeSpeeds, 300);
+
+    // ---- lightbox ----
+    var wallLightbox = document.getElementById('wallLightbox');
+    var wallLightboxImg = document.getElementById('wallLightboxImg');
+    var wallLightboxClose = document.getElementById('wallLightboxClose');
+
+    function openLightbox(src, alt) {
+      wallLightboxImg.src = src;
+      wallLightboxImg.alt = alt;
+      wallLightbox.classList.add('open');
+      wallLightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      wallLightbox.classList.remove('open');
+      wallLightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    wallLightboxClose.addEventListener('click', closeLightbox);
+    wallLightbox.addEventListener('click', function (e) { if (e.target === wallLightbox) closeLightbox(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
+  </script>
 
 </body>
 </html>
