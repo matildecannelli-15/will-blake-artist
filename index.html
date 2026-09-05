@@ -125,6 +125,31 @@
           </div>
         </div>
       </div>
+
+      <!-- ---- Tutoring 1:1 (prova), dentro l'hero ---- -->
+      <div class="container hero-tutor">
+        <h3 class="hero-tutor-heading">Prenota una sessione uno a uno.</h3>
+
+        <div class="tutor-card reveal">
+          <button class="tutor-arrow tutor-arrow-left" id="tutorArrowLeft" aria-label="Settimana precedente">
+            <svg viewBox="0 0 100 60"><path d="M100 20H45L45 0 0 30 45 60 45 40H100Z"/></svg>
+          </button>
+
+          <div class="tutor-card-inner">
+            <div class="tutor-label">
+              <p class="tutor-label-title" id="tutorWeekLabel">Settimana del 7–13 set.</p>
+              <p class="tutor-label-sub">Tutoring 1 to 1</p>
+            </div>
+            <div class="tutor-slots" id="tutorSlots"></div>
+          </div>
+
+          <button class="tutor-arrow tutor-arrow-right" id="tutorArrowRight" aria-label="Settimana successiva">
+            <svg viewBox="0 0 100 60"><path d="M0 20H55L55 0 100 30 55 60 55 40H0Z"/></svg>
+          </button>
+        </div>
+
+        <p class="tutor-note">Aggiornato a mano — quando uno slot viene prenotato, viene segnato qui.</p>
+      </div>
     </section>
 
     <!-- ============ STATS BAND ============ -->
@@ -516,6 +541,82 @@
 
       applyTransform();
       tick();
+    })();
+
+    /* Calendario tutoring 1:1: 3 settimane, le prime due con slot reali
+       (mercoledì e venerdì, stessi orari), la terza "coming soon". Dati
+       aggiornati a mano nel codice quando cambia qualcosa — vedi
+       tutoring-calendar-prototype.html per la cronologia delle scelte. */
+    (function () {
+      var slotsEl = document.getElementById('tutorSlots');
+      var labelEl = document.getElementById('tutorWeekLabel');
+      var arrowRight = document.getElementById('tutorArrowRight');
+      var arrowLeft = document.getElementById('tutorArrowLeft');
+      if (!slotsEl || !arrowRight || !arrowLeft) return;
+
+      var WEEKS = [
+        {
+          range: '7–13 set.',
+          slots: [
+            { day: 'MER', date: '09/09', time: '17:00–18:00', booked: false },
+            { day: 'VEN', date: '11/09', time: '16:00–17:00', booked: false },
+            { day: 'VEN', date: '11/09', time: '18:00–19:00', booked: false }
+          ]
+        },
+        {
+          range: '14–20 set.',
+          slots: [
+            { day: 'MER', date: '16/09', time: '17:00–18:00', booked: false },
+            { day: 'VEN', date: '18/09', time: '16:00–17:00', booked: false },
+            { day: 'VEN', date: '18/09', time: '18:00–19:00', booked: false }
+          ]
+        },
+        {
+          range: '21–27 set.',
+          comingSoon: true
+        }
+      ];
+
+      var current = 0;
+
+      function render() {
+        var week = WEEKS[current];
+        labelEl.innerHTML = 'Settimana del<br>' + week.range;
+        slotsEl.innerHTML = '';
+
+        if (week.comingSoon) {
+          var soon = document.createElement('div');
+          soon.className = 'tutor-soon';
+          soon.textContent = 'Coming soon';
+          slotsEl.appendChild(soon);
+          return;
+        }
+
+        week.slots.forEach(function (slot) {
+          var tile = document.createElement('div');
+          tile.className = 'tutor-slot' + (slot.booked ? ' is-booked' : '');
+          tile.innerHTML =
+            '<span class="slot-day">' + slot.day + '</span>' +
+            '<span class="slot-date">' + slot.date + '</span>' +
+            '<span class="slot-time">' + slot.time + '</span>' +
+            '<div class="slot-booked-overlay">' +
+              '<svg class="slot-x" viewBox="0 0 26 26"><path d="M4 4l18 18M22 4L4 22"/></svg>' +
+              '<span class="slot-booked-label">Prenotato</span>' +
+            '</div>';
+          slotsEl.appendChild(tile);
+        });
+      }
+
+      arrowRight.addEventListener('click', function () {
+        current = (current + 1) % WEEKS.length;
+        render();
+      });
+      arrowLeft.addEventListener('click', function () {
+        current = (current - 1 + WEEKS.length) % WEEKS.length;
+        render();
+      });
+
+      render();
     })();
   </script>
 

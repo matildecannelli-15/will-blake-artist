@@ -827,3 +827,88 @@
   .face-left   { transform: rotateY(-90deg) translateZ(var(--tz)); }
   .face-top    { transform: rotateX(90deg) translateZ(var(--tz)); }
   .face-bottom { transform: rotateX(-90deg) translateZ(var(--tz)); }
+
+  /* ============ TUTORING 1:1 (prova) — compatto, dentro l'hero ============ */
+  .hero-tutor{ margin-top:var(--space-5); }
+  .hero-tutor-heading{
+    font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
+    font-size:clamp(1.05rem, .95rem + .6vw, 1.3rem);
+    color:var(--cream-50); margin:0;
+  }
+
+  .tutor-card{
+    display:flex; align-items:center; gap:12px;
+    margin-top:12px;
+  }
+  .tutor-card-inner{
+    flex:1; display:flex; align-items:stretch; gap:16px;
+    border:2px solid var(--orange-500); border-radius:var(--radius-m);
+    background:rgba(21,18,14,.5);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    padding:14px 18px;
+  }
+  @media (max-width:640px){
+    .tutor-card{ flex-direction:column; }
+    .tutor-card-inner{ flex-direction:column; gap:12px; width:100%; }
+  }
+
+  .tutor-label{ flex-shrink:0; min-width:120px; display:flex; flex-direction:column; justify-content:center; }
+  .tutor-label-title{ font-family:var(--font-display); font-weight:700; font-size:17px; line-height:1.3; color:var(--cream-50); }
+  .tutor-label-sub{
+    margin-top:3px; font-family:var(--font-code); font-size:10px;
+    letter-spacing:.04em; text-transform:uppercase; color:rgba(251,246,238,.5);
+  }
+
+  .tutor-slots{ flex:1; display:flex; gap:8px; }
+  @media (max-width:640px){ .tutor-slots{ flex-direction:column; } }
+
+  .tutor-slot{
+    position:relative; flex:1;
+    min-height:84px;
+    border:1.5px solid rgba(255,255,255,.16); border-radius:10px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    text-align:center; padding:8px 6px;
+    background:rgba(255,255,255,.03);
+  }
+  .slot-day{
+    font-family:var(--font-code); font-size:9.5px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--orange-300);
+  }
+  .slot-date{ font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--cream-50); }
+  .slot-time{ font-family:var(--font-code); font-size:10px; color:rgba(251,246,238,.6); }
+
+  .tutor-slot.is-booked .slot-day,
+  .tutor-slot.is-booked .slot-date,
+  .tutor-slot.is-booked .slot-time{ opacity:.3; }
+  .slot-booked-overlay{
+    position:absolute; inset:0; display:none;
+    flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    background:rgba(21,18,14,.72); border-radius:9px;
+  }
+  .tutor-slot.is-booked .slot-booked-overlay{ display:flex; }
+  .slot-x{ width:18px; height:18px; }
+  .slot-x path{ stroke:var(--orange-600); stroke-width:8; stroke-linecap:round; }
+  .slot-booked-label{
+    font-family:var(--font-code); font-size:9px; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--orange-300);
+  }
+
+  .tutor-soon{
+    flex:1; min-height:84px; display:flex; align-items:center; justify-content:center;
+    border:1.5px dashed rgba(255,255,255,.18); border-radius:10px;
+    font-family:var(--font-code); font-weight:700; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; color:rgba(251,246,238,.4);
+  }
+
+  .tutor-arrow{
+    flex-shrink:0; background:none; border:none; padding:0; cursor:pointer;
+    width:24px; transition:transform .2s var(--ease);
+  }
+  .tutor-arrow svg{ width:100%; height:auto; fill:var(--orange-500); display:block; }
+  .tutor-arrow-right:hover{ transform:translateX(4px); }
+  .tutor-arrow-left:hover{ transform:translateX(-4px); }
+
+  .tutor-note{
+    margin-top:8px;
+    font-family:var(--font-code); font-size:10px; color:rgba(251,246,238,.35);
+  }
