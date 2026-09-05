@@ -643,6 +643,93 @@
   .field textarea{ resize:vertical; min-height:96px; }
   .field select option{ color:var(--ink-900); background:var(--cream-50); }
 
+  /* Nota contestuale sotto il select "Tipo di richiesta" (es. tutoring):
+     spunta obbligatoria + frase con il termine sottolineato che apre il box */
+  .c-note{
+    position:relative;
+    margin-top:12px;
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    font-family:var(--font-code);
+    font-size:12.5px;
+    line-height:1.55;
+    letter-spacing:0.01em;
+    color:rgba(255,255,255,0.6);
+  }
+  .c-note input[type="checkbox"]{
+    flex:none;
+    width:16px; height:16px;
+    margin:2px 0 0;
+    padding:0;
+    min-height:0;
+    border:1.5px solid rgba(255,255,255,0.4);
+    border-radius:4px;
+    box-shadow:none;
+    background:rgba(255,255,255,0.09);
+    accent-color:var(--orange-500);
+    -webkit-appearance:checkbox;
+    appearance:checkbox;
+    cursor:pointer;
+  }
+  .c-note input[type="checkbox"]:focus-visible{
+    outline:2px solid var(--orange-500); outline-offset:2px;
+  }
+  .c-note__text{ margin:0; }
+  /* la label eredita da .field label (maiuscolo, grassetto): qui la riporto
+     al testo normale della nota */
+  .c-note__text label{
+    cursor:pointer;
+    font:inherit;
+    letter-spacing:inherit;
+    text-transform:none;
+    color:inherit;
+  }
+  .c-note__trigger{
+    color:var(--orange-500);
+    font-weight:700;
+    cursor:help;
+    text-decoration:underline;
+    text-decoration-color:var(--orange-500);
+    text-decoration-thickness:2px;
+    text-underline-offset:3px;
+  }
+  .c-note__trigger:focus-visible{
+    outline:2px solid var(--orange-500); outline-offset:3px; border-radius:3px;
+  }
+  .c-note__pop{
+    position:absolute;
+    left:0; right:0;
+    bottom:calc(100% + 10px);
+    background:var(--ink-900);
+    border:1.5px solid var(--orange-500);
+    border-radius:var(--radius-s);
+    padding:13px 15px;
+    font-family:var(--font-body);
+    font-size:13px;
+    font-weight:400;
+    letter-spacing:0;
+    line-height:1.55;
+    color:rgba(251,246,238,0.9);
+    box-shadow:0 20px 44px -20px rgba(0,0,0,0.75);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;        /* invisibile = non intercetta mai il resto del form */
+    transform:translateY(5px);
+    transition:opacity .16s var(--ease), transform .16s var(--ease), visibility .16s;
+    z-index:20;
+  }
+  .c-note__pop::after{
+    content:""; position:absolute; left:20px; top:100%;
+    border:7px solid transparent; border-top-color:var(--orange-500);
+  }
+  /* Visibile solo mentre il cursore è sul testo sottolineato (o c'è il focus).
+     Tolto il mouse, sparisce. */
+  .c-note__trigger:hover ~ .c-note__pop,
+  .c-note__trigger:focus-visible ~ .c-note__pop{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+
   /* ============ FAQ ============ */
   .faq-list{
     display:flex; flex-direction:column; gap:10px;
@@ -870,6 +957,37 @@
     text-align:center; padding:8px 6px;
     background:rgba(255,255,255,.03);
   }
+  /* Slot libero = bottone cliccabile che porta al form */
+  button.tutor-slot{
+    font:inherit; color:inherit;
+    -webkit-appearance:none; appearance:none;
+    cursor:pointer;
+    transition:border-color .18s var(--ease), background .18s var(--ease),
+               transform .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  button.tutor-slot:hover{
+    border-color:var(--orange-500);
+    background:rgba(241,89,42,.12);
+    transform:translateY(-2px);
+    box-shadow:0 12px 26px -16px rgba(241,89,42,.6);
+  }
+  button.tutor-slot:focus-visible{
+    outline:2px solid var(--orange-500); outline-offset:2px;
+  }
+  /* Su hover il piccolo orario lascia il posto a "Prenota", stessa riga */
+  .slot-time{ transition:opacity .15s var(--ease); }
+  button.tutor-slot:hover .slot-time,
+  button.tutor-slot:focus-visible .slot-time{ opacity:0; }
+  .slot-cta{
+    position:absolute; left:0; right:0; bottom:12px;
+    font-family:var(--font-code); font-size:9px; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--orange-500);
+    opacity:0;
+    transition:opacity .18s var(--ease);
+  }
+  button.tutor-slot:hover .slot-cta,
+  button.tutor-slot:focus-visible .slot-cta{ opacity:1; }
+
   .slot-day{
     font-family:var(--font-code); font-size:9.5px; font-weight:700;
     letter-spacing:.1em; text-transform:uppercase; color:var(--orange-300);

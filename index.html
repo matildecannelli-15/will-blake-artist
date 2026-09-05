@@ -256,8 +256,8 @@
         </div>
 
         <div id="contatti" class="contact-panel reveal">
-          <h3>Commissioni &amp; collaborazioni</h3>
-          <p>Per lavori su commissione o proposte brand — rispondo io, personalmente.</p>
+          <h3>Contattami</h3>
+          <p>Commissioni, tutoring, collaborazioni — rispondo io, personalmente.</p>
 
           <form action="mailto:will.blake@outlook.it" method="POST" enctype="text/plain">
             <div class="field">
@@ -271,10 +271,19 @@
             <div class="field">
               <label for="c-type">Tipo di richiesta</label>
               <select id="c-type" name="tipo">
-                <option>Commissione artistica</option>
-                <option>Collaborazione brand</option>
+                <option>Commissione</option>
+                <option>Tutoring 1 to 1</option>
+                <option>Collaboriamo</option>
                 <option>Altro</option>
               </select>
+              <div class="c-note" id="tutoringNote" hidden>
+                <input type="checkbox" id="c-terms" name="condizioni_tutoring" value="lette e accettate" required>
+                <p class="c-note__text">
+                  <label for="c-terms">Un attimo prima di scrivermi — ho letto e accetto le</label>
+                  <span class="c-note__trigger" tabindex="0" aria-describedby="tutoringPolicy">condizioni del tutoring</span>.
+                  <span class="c-note__pop" id="tutoringPolicy" role="tooltip">Il tutoring si paga in anticipo, per intero. Dopo la prenotazione puoi spostare o disdire l'appuntamento fino a 24 ore prima — oltre quel limite, no. Se non ti presenti e non hai disdetto in tempo, l'acconto resta perso.</span>
+                </p>
+              </div>
             </div>
             <div class="field">
               <label for="c-msg">Messaggio</label>
@@ -593,18 +602,54 @@
         }
 
         week.slots.forEach(function (slot) {
-          var tile = document.createElement('div');
-          tile.className = 'tutor-slot' + (slot.booked ? ' is-booked' : '');
+          var free = !slot.booked;
+          var tile = document.createElement(free ? 'button' : 'div');
+          tile.className = 'tutor-slot' + (free ? ' is-free' : ' is-booked');
           tile.innerHTML =
             '<span class="slot-day">' + slot.day + '</span>' +
             '<span class="slot-date">' + slot.date + '</span>' +
             '<span class="slot-time">' + slot.time + '</span>' +
+            (free ? '<span class="slot-cta">Prenota</span>' : '') +
             '<div class="slot-booked-overlay">' +
               '<svg class="slot-x" viewBox="0 0 26 26"><path d="M4 4l18 18M22 4L4 22"/></svg>' +
               '<span class="slot-booked-label">Prenotato</span>' +
             '</div>';
+          if (free) {
+            tile.type = 'button';
+            tile.setAttribute('aria-label',
+              'Prenota lezione 1 to 1 di ' + slot.day + ' ' + slot.date + ', ' + slot.time);
+            tile.addEventListener('click', function () { bookSlot(slot); });
+          }
           slotsEl.appendChild(tile);
         });
+      }
+
+      /* Click su uno slot libero: porta al form contatti già impostato su
+         "Tutoring 1 to 1", con il messaggio precompilato su data e ora
+         scelte, cursore pronto per scrivere l'argomento. */
+      function bookSlot(slot) {
+        var typeSel = document.getElementById('c-type');
+        var msg = document.getElementById('c-msg');
+        var start = slot.time.split('–')[0].split('-')[0].trim();
+
+        if (typeSel) {
+          typeSel.value = 'Tutoring 1 to 1';
+          typeSel.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        if (msg) {
+          msg.value = 'Mi prenoto per una lezione 1 to 1 il ' + slot.date +
+            ' alle ' + start + '. Su cosa voglio lavorare: ';
+        }
+
+        var target = document.getElementById('contatti');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (msg) {
+          setTimeout(function () {
+            msg.focus();
+            msg.selectionStart = msg.selectionEnd = msg.value.length;
+          }, 550);
+        }
       }
 
       arrowRight.addEventListener('click', function () {
@@ -617,6 +662,32 @@
       });
 
       render();
+    })();
+
+    /* Nota tutoring nel form contatti: compare solo quando il tipo di
+       richiesta è "Tutoring 1 to 1", e con lei la spunta obbligatoria per
+       accettare le condizioni. Vanilla, nessuna libreria: se JS è
+       disabilitato la nota resta nascosta (l'attributo hidden è già
+       nell'HTML) e il form funziona lo stesso. */
+    (function () {
+      var select = document.getElementById('c-type');
+      var note = document.getElementById('tutoringNote');
+      var terms = document.getElementById('c-terms');
+      if (!select || !note) return;
+
+      function sync() {
+        var isTutoring = select.value.indexOf('Tutoring') !== -1;
+        note.hidden = !isTutoring;
+        if (terms) {
+          /* nascosta la spunta non deve bloccare l'invio: fuori dal
+             tutoring la disattivo e la deseleziono */
+          terms.required = isTutoring;
+          terms.disabled = !isTutoring;
+          if (!isTutoring) terms.checked = false;
+        }
+      }
+      select.addEventListener('change', sync);
+      sync();
     })();
   </script>
 
