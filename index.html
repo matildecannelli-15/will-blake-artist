@@ -65,6 +65,50 @@
               </p>
             </div>
           </div>
+        </div>
+
+        <div class="hero-visual reveal" aria-label="Cubo di navigazione — passa il mouse su una faccia per esplorare il sito">
+          <div class="cube-wrap" id="cubeWrap">
+            <button class="nav-arrow nav-arrow-left" id="arrowLeft" aria-label="Faccia precedente">
+              <svg viewBox="0 0 100 60"><path d="M100 20H45L45 0 0 30 45 60 45 40H100Z"/></svg>
+            </button>
+
+            <div class="cube-stage" id="cubeStage">
+              <div class="cube" id="cube">
+                <a class="cube-face face-front" data-face="front" href="#top" draggable="false">
+                  <span class="f-eyebrow">01</span><span class="f-title">Home</span>
+                </a>
+                <a class="cube-face face-right" data-face="right" href="portfolio.html" draggable="false">
+                  <span class="f-eyebrow">02</span><span class="f-title">Portfolio</span>
+                </a>
+                <a class="cube-face face-back" data-face="back" href="#contenuti" draggable="false">
+                  <span class="f-eyebrow">03</span><span class="f-title">Contenuti</span>
+                </a>
+                <a class="cube-face face-left" data-face="left" href="faq.html" draggable="false">
+                  <span class="f-eyebrow">04</span><span class="f-title">FAQ</span>
+                </a>
+                <a class="cube-face face-top" data-face="top" href="#chi-sono" draggable="false">
+                  <span class="f-eyebrow">05</span><span class="f-title">Chi sono</span>
+                </a>
+                <a class="cube-face face-bottom" data-face="bottom" href="#contatti" draggable="false">
+                  <span class="f-eyebrow">06</span><span class="f-title">Contatti</span>
+                </a>
+              </div>
+            </div>
+
+            <button class="nav-arrow nav-arrow-right" id="arrowRight" aria-label="Faccia successiva">
+              <svg viewBox="0 0 100 60"><path d="M0 20H55L55 0 100 30 55 60 55 40H0Z"/></svg>
+            </button>
+          </div>
+
+          <div class="live-status-card">
+            <span class="ls-dot is-off" id="lsDot" aria-hidden="true"></span>
+            <span class="ls-info">
+              <span class="ls-label">Palinsesto live</span>
+              <span class="ls-text" id="lsText">Prossima live: lun 21:00</span>
+            </span>
+            <a href="https://www.tiktok.com/@will.blake_artist/live" target="_blank" rel="noopener noreferrer" class="ls-cta">Guarda la live →</a>
+          </div>
 
           <div class="hero-schedule">
             <p class="hero-schedule-label">Live ogni settimana</p>
@@ -78,17 +122,6 @@
               <span class="day">DOM</span>
             </div>
             <p class="hero-schedule-time">21:00 — 23:00</p>
-          </div>
-        </div>
-
-        <div class="hero-visual reveal" aria-label="Disegno di Will Blake">
-          <div class="live-status-card">
-            <span class="ls-dot is-off" id="lsDot" aria-hidden="true"></span>
-            <span class="ls-info">
-              <span class="ls-label">Palinsesto live</span>
-              <span class="ls-text" id="lsText">Prossima live: lun 21:00</span>
-            </span>
-            <a href="https://www.tiktok.com/@will.blake_artist/live" target="_blank" rel="noopener noreferrer" class="ls-cta">Guarda la live →</a>
           </div>
         </div>
       </div>
@@ -347,6 +380,142 @@
         });
       }, { threshold: 0.4 });
       observer.observe(band);
+    })();
+
+    /* Cubo di navigazione in hero: ruota da solo, si trascina col mouse,
+       l'hover su una faccia la porta di fronte (e mostra le frecce per
+       scorrere le facce in loop). Storia completa delle scelte in
+       nav-cube-prototype.html. Vanilla, nessuna libreria. */
+    (function () {
+      var cube = document.getElementById('cube');
+      if (!cube) return;
+      var faces = cube.querySelectorAll('.cube-face');
+
+      var FACE_TARGETS = {
+        front:  { x: 0,   y: 0 },
+        back:   { x: 0,   y: 180 },
+        right:  { x: 0,   y: -90 },
+        left:   { x: 0,   y: 90 },
+        top:    { x: -90, y: 0 },
+        bottom: { x: 90,  y: 0 }
+      };
+      var FACE_ORDER = ['front', 'right', 'back', 'left', 'top', 'bottom'];
+      var lockedFaceIndex = -1;
+
+      var currentX = -14, currentY = 20;
+      var speedX = 0.11, speedY = 0.17;
+      var autoRotating = true;
+      var rafId = null;
+
+      function applyTransform() {
+        cube.style.transform = 'rotateX(' + currentX + 'deg) rotateY(' + currentY + 'deg)';
+      }
+
+      function tick() {
+        if (!autoRotating) return;
+        currentX += speedX;
+        currentY += speedY;
+        applyTransform();
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function nearestEquivalent(current, target) {
+        return target + Math.round((current - target) / 360) * 360;
+      }
+
+      function focusFace(faceName) {
+        if (isDragging) return;
+        autoRotating = false;
+        if (rafId) cancelAnimationFrame(rafId);
+        cube.style.transition = 'transform .6s var(--ease, ease)';
+        var t = FACE_TARGETS[faceName];
+        currentX = nearestEquivalent(currentX, t.x);
+        currentY = nearestEquivalent(currentY, t.y);
+        applyTransform();
+        lockedFaceIndex = FACE_ORDER.indexOf(faceName);
+        cubeWrap.classList.add('is-locked');
+      }
+
+      function resumeAuto() {
+        if (isDragging) return;
+        cube.style.transition = 'none';
+        autoRotating = true;
+        lockedFaceIndex = -1;
+        cubeWrap.classList.remove('is-locked');
+        tick();
+      }
+
+      faces.forEach(function (face) {
+        face.addEventListener('mouseenter', function () { focusFace(face.dataset.face); });
+      });
+      var cubeWrap = document.getElementById('cubeWrap');
+      cubeWrap.addEventListener('mouseleave', resumeAuto);
+
+      var arrowLeft = document.getElementById('arrowLeft');
+      var arrowRight = document.getElementById('arrowRight');
+      function goToRelativeFace(step) {
+        if (lockedFaceIndex === -1) return;
+        var n = FACE_ORDER.length;
+        var nextIndex = (lockedFaceIndex + step + n) % n;
+        focusFace(FACE_ORDER[nextIndex]);
+      }
+      arrowRight.addEventListener('click', function () { goToRelativeFace(1); });
+      arrowLeft.addEventListener('click', function () { goToRelativeFace(-1); });
+
+      // ---- trascinamento col mouse ----
+      var stage = document.getElementById('cubeStage');
+      var isDragging = false;
+      var dragStartX = 0, dragStartY = 0;
+      var dragStartRotX = 0, dragStartRotY = 0;
+      var dragMoved = 0;
+      var DRAG_SENSITIVITY = 0.4;
+      var CLICK_THRESHOLD = 6;
+
+      stage.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+      stage.addEventListener('pointerdown', function (e) {
+        e.preventDefault();
+        isDragging = true;
+        dragMoved = 0;
+        autoRotating = false;
+        lockedFaceIndex = -1;
+        cubeWrap.classList.remove('is-locked');
+        if (rafId) cancelAnimationFrame(rafId);
+        cube.style.transition = 'none';
+        dragStartX = e.clientX; dragStartY = e.clientY;
+        dragStartRotX = currentX; dragStartRotY = currentY;
+        stage.setPointerCapture(e.pointerId);
+        stage.classList.add('is-dragging');
+      });
+
+      stage.addEventListener('pointermove', function (e) {
+        if (!isDragging) return;
+        var dx = e.clientX - dragStartX;
+        var dy = e.clientY - dragStartY;
+        dragMoved = Math.max(dragMoved, Math.abs(dx), Math.abs(dy));
+        currentY = dragStartRotY + dx * DRAG_SENSITIVITY;
+        currentX = dragStartRotX - dy * DRAG_SENSITIVITY;
+        applyTransform();
+      });
+
+      function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        stage.classList.remove('is-dragging');
+      }
+      stage.addEventListener('pointerup', endDrag);
+      stage.addEventListener('pointercancel', endDrag);
+
+      // un trascinamento non deve contare come click sulla faccia
+      // (altrimenti si naviga per sbaglio solo perché si stava ruotando).
+      faces.forEach(function (face) {
+        face.addEventListener('click', function (e) {
+          if (dragMoved > CLICK_THRESHOLD) e.preventDefault();
+        });
+      });
+
+      applyTransform();
+      tick();
     })();
   </script>
 

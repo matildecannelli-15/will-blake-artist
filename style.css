@@ -201,7 +201,7 @@
     display:grid;
     grid-template-columns:1.15fr 0.85fr;
     gap:var(--space-5);
-    align-items:center;
+    align-items:start; /* il cubo parte allineato in cima, come il testo */
   }
   @media (max-width:900px){
     .hero-grid{ grid-template-columns:1fr; gap:var(--space-4); }
@@ -252,7 +252,7 @@
   .hero-cta-primary .btn-primary{ width:auto; margin-top:0; }
   .hero-cta-primary .btn-fineprint{ justify-content:flex-start; }
 
-  .hero-schedule{ margin-top:var(--space-3); }
+  .hero-schedule{ align-self:stretch; margin-top:var(--space-2); }
   .hero-schedule-label{
     font-family:var(--font-code); font-size:10.5px; font-weight:700;
     letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.45);
@@ -280,20 +280,25 @@
 
   .hero-visual{
     position:relative;
-    aspect-ratio:4/5;
-    border-radius:var(--radius-l);
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,0.14);
-    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
-    background:
-      linear-gradient(to top, rgba(21,18,14,0.8) 0%, rgba(21,18,14,0) 38%),
-      url('ACTING_&_DRAMA.jpg') center/cover no-repeat,
-      linear-gradient(155deg, var(--orange-500) 0%, var(--blue-900) 75%, var(--ink-900) 100%);
+    display:flex; flex-direction:column; align-items:center;
+    padding-top:var(--space-4); /* margine sopra il cubo, così non viene
+      tagliato in alto quando ruotando sporge dal suo riquadro */
+    overflow:hidden; /* rete di sicurezza: il cubo 3D può sporgere dal
+      suo riquadro ad alcuni angoli di rotazione */
   }
-  @media (max-width:900px){ .hero-visual{ aspect-ratio:4/5; } }
+  /* Sotto i 900px il cubo è ancora una versione "di passaggio": più
+     piccolo — una vera versione mobile (tocco invece di
+     hover/trascinamento) resta da fare, vedi to-do. */
+  @media (max-width:900px){
+    .cube-stage{ width:140px; height:140px; --tz:70px; }
+    .cube-face{ border-width:3px; }
+    .cube-face .f-title{ font-size:18px; }
+    .cube-face .f-eyebrow{ font-size:9.5px; }
+  }
 
   .live-status-card{
-    position:absolute; left:14px; right:14px; bottom:14px;
+    align-self:stretch;
+    margin-top:var(--space-5);
     display:flex; align-items:center; gap:12px;
     background:rgba(21,18,14,0.6);
     border:1px solid rgba(255,255,255,0.18);
@@ -764,3 +769,61 @@
     display:flex; align-items:center; justify-content:center;
   }
   .wall-lightbox-close:hover{ background:rgba(255,255,255,.16); }
+
+  /* ============ CUBO NAV (hero) ============ */
+  /* Cubo 3D di navigazione al posto dell'immagine in hero: ruota da solo,
+     si trascina col mouse, l'hover su una faccia la porta di fronte e fa
+     comparire le frecce laterali per scorrere le facce in loop. Prima
+     versione pensata per laptop/trackpad — vedi
+     nav-cube-prototype.html per la cronologia delle scelte. */
+  .cube-wrap{
+    display:flex; align-items:center; gap:22px;
+    position:relative; z-index:2;
+  }
+
+  .nav-arrow{
+    background:none; border:none; padding:0; cursor:pointer;
+    width:30px; flex-shrink:0;
+    opacity:0; pointer-events:none; transform:translateX(0);
+    transition:opacity .25s var(--ease), transform .25s var(--ease);
+  }
+  .nav-arrow svg{ width:100%; height:auto; fill:var(--orange-500); display:block; }
+  .cube-wrap.is-locked .nav-arrow{ opacity:1; pointer-events:auto; }
+  .cube-wrap.is-locked .nav-arrow-left:hover{ transform:translateX(-4px); }
+  .cube-wrap.is-locked .nav-arrow-right:hover{ transform:translateX(4px); }
+
+  .cube-stage{
+    --tz:75px; /* metà lato del cubo: quanto ogni faccia sporge dal centro */
+    width:150px; height:150px; flex-shrink:0;
+    perspective:900px;
+    cursor:grab; touch-action:none; user-select:none; -webkit-user-select:none;
+  }
+  .cube-stage.is-dragging{ cursor:grabbing; }
+  .cube{
+    position:relative; width:100%; height:100%;
+    transform-style:preserve-3d;
+  }
+  .cube-face{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    border-radius:0;
+    border:4px solid var(--orange-500);
+    background:transparent;
+    backface-visibility:hidden;
+    text-decoration:none; color:var(--cream-100);
+  }
+  .cube-face .f-eyebrow{
+    font-family:var(--font-code); font-size:11px; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase; opacity:.7;
+  }
+  .cube-face .f-title{
+    font-family:var(--font-display); font-weight:700; font-size:24px;
+    letter-spacing:-.01em; color:var(--cream-50);
+  }
+
+  .face-front  { transform: translateZ(var(--tz)); }
+  .face-back   { transform: rotateY(180deg) translateZ(var(--tz)); }
+  .face-right  { transform: rotateY(90deg) translateZ(var(--tz)); }
+  .face-left   { transform: rotateY(-90deg) translateZ(var(--tz)); }
+  .face-top    { transform: rotateX(90deg) translateZ(var(--tz)); }
+  .face-bottom { transform: rotateX(-90deg) translateZ(var(--tz)); }
