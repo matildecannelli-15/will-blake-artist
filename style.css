@@ -1046,3 +1046,4 @@
   .wip-note{ margin-top:var(--space-2); color:var(--ink-400); font-family:var(--font-code); font-size:14px; }
   .wip-cta{ display:flex; flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-4); }
   .wip-cta .btn{ width:auto; margin-top:0; }
+  .wip-inline{ min-height:0; display:block; }
