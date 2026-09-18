@@ -28,8 +28,8 @@
 
       <nav class="nav-links">
         <a href="#top">Home</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="contenuti.html">Contenuti</a>
+        <a href="portfolio.html" class="nav-wip" title="In lavorazione">Portfolio</a>
+        <a href="contenuti.html" class="nav-wip" title="In lavorazione">Contenuti</a>
         <a href="faq.html">FAQ</a>
         <a href="#chi-sono">Chi sono</a>
         <a href="#contatti">Contatti</a>
@@ -531,9 +531,9 @@
       var arrowLeft = document.getElementById('tutorArrowLeft');
       if (!slotsEl || !arrowRight || !arrowLeft) return;
 
-      var ALL_WEEKS = [
+      var WEEKS = [
         {
-          range: '7–13 set.', end: '13/09',
+          range: '7–13 set.',
           slots: [
             { day: 'MER', date: '09/09', time: '17:00–18:00', booked: false },
             { day: 'VEN', date: '11/09', time: '16:00–17:00', booked: false },
@@ -541,7 +541,7 @@
           ]
         },
         {
-          range: '14–20 set.', end: '20/09',
+          range: '14–20 set.',
           slots: [
             { day: 'MER', date: '16/09', time: '17:00–18:00', booked: false },
             { day: 'VEN', date: '18/09', time: '16:00–17:00', booked: false },
@@ -549,48 +549,16 @@
           ]
         },
         {
-          range: '21–27 set.', end: '27/09',
+          range: '21–27 set.',
           comingSoon: true
         }
       ];
-
-      /* Le settimane finite spariscono da sole; gli slot già iniziati di una
-         settimana in corso restano ma opacizzati e non prenotabili. "Adesso"
-         è l'ora di Copenaghen (lo stesso fuso della live), come numero
-         AAAAMMGGhhmm da confrontare con data e ora di inizio. Le date nei
-         dati non hanno l'anno: vale quello corrente (a cavallo d'anno, i mesi
-         molto più bassi del mese attuale contano come anno dopo). Ogni
-         settimana ha `end` (ultimo giorno, GG/MM): finita quella, sparisce. */
-      var now = {};
-      new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Europe/Copenhagen', hourCycle: 'h23',
-        year: 'numeric', month: 'numeric', day: 'numeric',
-        hour: 'numeric', minute: 'numeric'
-      }).formatToParts(new Date()).forEach(function (p) {
-        now[p.type] = parseInt(p.value, 10);
-      });
-      var nowStamp = ((now.year * 100 + now.month) * 100 + now.day) * 10000 +
-        now.hour * 100 + now.minute;
-
-      function stamp(dateStr, timeStr) {
-        var d = dateStr.split('/');
-        var t = (timeStr || '23:59').split(':');
-        var month = parseInt(d[1], 10);
-        var year = now.year + (month < now.month - 6 ? 1 : 0);
-        return ((year * 100 + month) * 100 + parseInt(d[0], 10)) * 10000 +
-          parseInt(t[0], 10) * 100 + parseInt(t[1], 10);
-      }
-
-      var WEEKS = ALL_WEEKS.filter(function (w) {
-        return stamp(w.end) > nowStamp;
-      });
-      if (!WEEKS.length) WEEKS = [{ range: '', comingSoon: true }];
 
       var current = 0;
 
       function render() {
         var week = WEEKS[current];
-        labelEl.innerHTML = week.range ? 'Settimana del<br>' + week.range : 'Prossime<br>date';
+        labelEl.innerHTML = 'Settimana del<br>' + week.range;
         slotsEl.innerHTML = '';
 
         if (week.comingSoon) {
@@ -602,12 +570,9 @@
         }
 
         week.slots.forEach(function (slot) {
-          /* slot già iniziato: resta visibile ma opacizzato e non cliccabile */
-          var past = stamp(slot.date, slot.time.split('–')[0].trim()) <= nowStamp;
-          var free = !slot.booked && !past;
+          var free = !slot.booked;
           var tile = document.createElement(free ? 'button' : 'div');
-          tile.className = 'tutor-slot' + (free ? ' is-free' : '') +
-            (slot.booked ? ' is-booked' : '') + (past ? ' is-past' : '');
+          tile.className = 'tutor-slot' + (free ? ' is-free' : ' is-booked');
           tile.innerHTML =
             '<span class="slot-day">' + slot.day + '</span>' +
             '<span class="slot-date">' + slot.date + '</span>' +
