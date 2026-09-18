@@ -507,32 +507,50 @@
 
       stage.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
+      // Il trascinamento parte solo quando il puntatore si sposta oltre
+      // CLICK_THRESHOLD. Prima di allora è un click normale: non tocco lo
+      // stato del cubo e NON catturo il puntatore — con setPointerCapture
+      // il browser assegna il click al contenitore invece che al link
+      // della faccia, e la navigazione non partiva mai.
+      var pressed = false;
+      var pressPointerId = null;
+
       stage.addEventListener('pointerdown', function (e) {
-        e.preventDefault();
-        isDragging = true;
+        pressed = true;
+        pressPointerId = e.pointerId;
         dragMoved = 0;
-        autoRotating = false;
-        lockedFaceIndex = -1;
-        cubeWrap.classList.remove('is-locked');
-        if (rafId) cancelAnimationFrame(rafId);
-        cube.style.transition = 'none';
         dragStartX = e.clientX; dragStartY = e.clientY;
-        dragStartRotX = currentX; dragStartRotY = currentY;
-        stage.setPointerCapture(e.pointerId);
-        stage.classList.add('is-dragging');
       });
 
       stage.addEventListener('pointermove', function (e) {
-        if (!isDragging) return;
+        if (!pressed) return;
         var dx = e.clientX - dragStartX;
         var dy = e.clientY - dragStartY;
         dragMoved = Math.max(dragMoved, Math.abs(dx), Math.abs(dy));
-        currentY = dragStartRotY + dx * DRAG_SENSITIVITY;
-        currentX = dragStartRotX - dy * DRAG_SENSITIVITY;
+
+        if (!isDragging) {
+          if (dragMoved <= CLICK_THRESHOLD) return;
+          // inizia il trascinamento vero
+          isDragging = true;
+          autoRotating = false;
+          lockedFaceIndex = -1;
+          cubeWrap.classList.remove('is-locked');
+          if (rafId) cancelAnimationFrame(rafId);
+          cube.style.transition = 'none';
+          dragStartX = e.clientX; dragStartY = e.clientY;
+          dragStartRotX = currentX; dragStartRotY = currentY;
+          stage.setPointerCapture(pressPointerId);
+          stage.classList.add('is-dragging');
+          return;
+        }
+
+        currentY = dragStartRotY + (e.clientX - dragStartX) * DRAG_SENSITIVITY;
+        currentX = dragStartRotX - (e.clientY - dragStartY) * DRAG_SENSITIVITY;
         applyTransform();
       });
 
       function endDrag() {
+        pressed = false;
         if (!isDragging) return;
         isDragging = false;
         stage.classList.remove('is-dragging');
