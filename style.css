@@ -657,6 +657,7 @@
     letter-spacing:0.01em;
     color:rgba(255,255,255,0.6);
   }
+  .c-note[hidden]{ display:none; }   /* display:flex sopra batterebbe l'attributo hidden */
   .c-note input[type="checkbox"]{
     flex:none;
     width:16px; height:16px;
