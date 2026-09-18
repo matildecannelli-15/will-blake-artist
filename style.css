@@ -641,6 +641,11 @@
     outline:none; border-color:var(--orange-500); background:rgba(255,255,255,0.13);
   }
   .field textarea{ resize:vertical; min-height:96px; }
+
+  .form-status{ margin-top:var(--space-2); font-size:14px; line-height:1.5; }
+  .form-status.is-ok{ color:var(--cream-50); }
+  .form-status.is-error{ color:var(--orange-300); }
+  .contact-panel button:disabled{ opacity:.6; cursor:progress; }
   .field select option{ color:var(--ink-900); background:var(--cream-50); }
 
   /* Nota contestuale sotto il select "Tipo di richiesta" (es. tutoring):
