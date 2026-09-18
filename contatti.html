@@ -48,7 +48,7 @@
           <div class="rule"><span></span><span></span></div>
         </div>
 
-        <div class="contact-panel reveal">
+        <div class="contact-panel">
           <h3>Scrivimi</h3>
           <p>Per lavori su commissione o proposte brand — rispondo io, personalmente.</p>
 
@@ -116,43 +116,7 @@
     </div>
   </footer>
 
-  <script>
-    // Invio del form a Formspree senza lasciare la pagina; senza JS resta il normale POST.
-    (function(){
-      var form = document.getElementById('contact-form');
-      var status = document.getElementById('form-status');
-      if (!form || !window.fetch) return;
-      var btn = form.querySelector('button[type="submit"]');
-
-      function show(msg, ok){
-        status.textContent = msg;
-        status.className = 'form-status ' + (ok ? 'is-ok' : 'is-error');
-        status.hidden = false;
-      }
-
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        btn.disabled = true;
-        status.hidden = true;
-        fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
-        }).then(function(res){
-          if (res.ok) {
-            form.reset();
-            show('Messaggio inviato. Ti rispondo appena posso.', true);
-          } else {
-            show('Qualcosa non ha funzionato. Riprova tra poco, oppure scrivimi a will.blake@outlook.it.', false);
-          }
-        }).catch(function(){
-          show('Qualcosa non ha funzionato. Riprova tra poco, oppure scrivimi a will.blake@outlook.it.', false);
-        }).then(function(){
-          btn.disabled = false;
-        });
-      });
-    })();
-  </script>
+  <script src="contact-form.js"></script>
 
 </body>
 </html>

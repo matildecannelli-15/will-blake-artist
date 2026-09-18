@@ -209,7 +209,9 @@
           <h3>Contattami</h3>
           <p>Commissioni, tutoring, collaborazioni — rispondo io, personalmente.</p>
 
-          <form action="mailto:will.blake@outlook.it" method="POST" enctype="text/plain">
+          <form id="contact-form" action="https://formspree.io/f/xaennlln" method="POST">
+            <input type="hidden" name="_subject" value="Nuovo messaggio dal sito Will Blake">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
             <div class="field">
               <label for="c-name">Nome</label>
               <input id="c-name" name="nome" type="text" placeholder="Il tuo nome" required>
@@ -243,6 +245,7 @@
               Invia messaggio
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
+            <p id="form-status" class="form-status" role="status" aria-live="polite" hidden></p>
           </form>
         </div>
       </div>
@@ -693,6 +696,7 @@
       sync();
     })();
   </script>
+  <script src="contact-form.js"></script>
 
 </body>
 </html>
